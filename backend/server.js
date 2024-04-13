@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import connectDatabase from "./src/config/connection.js";
-import seedDatabase from "./src/models/seed.js";
-import { User, Account } from "./src/models/index.js";
+import connectDatabase from "./config/connection.js";
+import seedDatabase from "./api/models/seed.js";
+import { User, Account } from "./api/models/index.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();

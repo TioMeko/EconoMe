@@ -1,17 +1,15 @@
 import "dotenv/config";
 import express from "express";
+import bodyParser from "body-parser";
 import connectDatabase from "./config/connection.js";
 import seedDatabase from "./api/models/seed.js";
-import { User, Account } from "./api/models/index.js";
+import userRoutes from "./api/routes/userRoutes.js"
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-app.get("/", async (req, res) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => res.status(500).json(err));
-});
+app.use(bodyParser.json());
+app.use('/api',userRoutes);
 
 const startServer = async () => {
   try {

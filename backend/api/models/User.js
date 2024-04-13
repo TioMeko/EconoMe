@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { type } from "os";
 
 const userSchema = new Schema({
   username: {

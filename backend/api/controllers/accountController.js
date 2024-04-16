@@ -44,7 +44,7 @@ const getAccount = async (req, res) => {
 // Update an account by id
 const updateAccount = async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["accountType", "institution", "balance"]; // Example fields that might be allowed to update
+  const allowedUpdates = ["accountType", "institution", "balance"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );

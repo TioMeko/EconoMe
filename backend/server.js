@@ -3,13 +3,13 @@ import express from "express";
 import bodyParser from "body-parser";
 import connectDatabase from "./config/connection.js";
 import seedDatabase from "./api/models/seed.js";
-import userRoutes from "./api/routes/userRoutes.js"
+import routes from "./api/routes/index.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
-app.use('/api',userRoutes);
+app.use('/api', routes);
 
 const startServer = async () => {
   try {
@@ -17,10 +17,10 @@ const startServer = async () => {
     console.log(
       `[${new Date().toISOString()}] Connected to database, now seeding...`
     );
-    await seedDatabase();
-    console.log(
-      `[${new Date().toISOString()}] Seeding completed, starting server...`
-    );
+    // await seedDatabase();
+    // console.log(
+    //   `[${new Date().toISOString()}] Seeding completed, starting server...`
+    // );
     app.listen(PORT, () => {
       console.log(
         `[${new Date().toISOString()}] API server running on port ${PORT}`

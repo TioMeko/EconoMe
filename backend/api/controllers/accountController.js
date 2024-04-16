@@ -31,12 +31,12 @@ const getAccount = async (req, res) => {
   try {
     const account = await Account.findById(req.params.id);
     if (!account) {
-      res.status(400).send({ message: "User not found" });
+      res.status(400).send({ message: "Account not found" });
     }
     res.send(account);
   } catch (error) {
     res.status(500).send({
-      error: "An error occurred while fetching the user",
+      error: "An error occurred while fetching the account",
     });
   }
 };
@@ -79,7 +79,7 @@ const deleteAccount = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .send({ message: "Failed to delete user", error: error.message });
+      .send({ message: "Failed to delete account", error: error.message });
   }
 };
 

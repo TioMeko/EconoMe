@@ -1,17 +1,29 @@
-import { Account } from "../models/index.js";
+import { Account, User } from "../models/index.js";
 
 // Create a new account
 const createAccount = async (req, res) => {
   try {
-    const newAccount = new Account(req.body);
+    const { userId, accountType, institution, balance } = req.body;
+
+    // Create new account document
+    const newAccount = new Account({
+      userId,
+      accountType,
+      institution,
+      balance
+    });
     await newAccount.save();
+
+    // Link this account to the corresponding user
+    await User.findByIdAndUpdate(userId, { $push: { accounts: newAccount._id } });
+
     console.log(`[${new Date().toISOString()}] New account has been created.`);
     res.status(201).send(newAccount);
   } catch (error) {
-    // 400 Error if missing params
+    console.error(error);
     res.status(400).send({
       message: "Failed to create account due to missing or invalid fields.",
-      errors: error.errors,
+      errors: error.errors
     });
   }
 };

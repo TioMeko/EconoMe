@@ -4,6 +4,7 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
@@ -12,17 +13,19 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Ensures email addresses are unique across documents
+    unique: true,
   },
   password: {
     type: String,
     required: true,
-    // *************** need to add in security validation ***************
   },
   createdAt: {
     type: Date,
-    default: Date.now, // Default value for the createdAt field
+    default: Date.now,
   },
+  accounts: [{ type: Schema.Types.ObjectId, ref: "Account" }],
+  budgets: [{ type: Schema.Types.ObjectId, ref: "Budget" }],
+  savings: [{ type: Schema.Types.ObjectId, ref: "Savings"}]
 });
 
 const User = model("User", userSchema);

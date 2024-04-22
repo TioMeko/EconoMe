@@ -4,12 +4,15 @@ import bodyParser from "body-parser";
 import connectDatabase from "./config/connection.js";
 import seedDatabase from "./api/models/seed.js";
 import routes from "./api/routes/index.js";
+import { errorHandle, requestLogging } from "./middleware/middleware.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+requestLogging(app);
 app.use(bodyParser.json());
 app.use('/api', routes);
+errorHandle(app);
 
 const startServer = async () => {
   try {

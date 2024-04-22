@@ -1,14 +1,28 @@
-import { Transaction } from "../models/index.js";
+import { Transaction, Account } from "../models/index.js";
 
 // Create a new transaction
 const createTransaction = async (req, res) => {
   try {
+    if (!req.body.accountId) {
+      return res.status(400).send({ message: "AccountId is required to create a transaction." });
+    }
+
+    const { accountId } = req.body;
+
+    const accountExists = await Account.findById(accountId);
+    if (!accountExists) {
+      return res.status(404).send({ message: "Account not found. Cannot create transaction." });
+    }
+
     const newTransaction = new Transaction(req.body);
     await newTransaction.save();
+
+    await Account.findByIdAndUpdate(accountId, { $push: { transactions: newTransaction._id } });
+
     console.log(`[${new Date().toISOString()}] New transaction has been created.`);
     res.status(201).send(newTransaction);
   } catch (error) {
-    // 400 Error if missing params
+    console.error(error);
     res.status(400).send({
       message: "Failed to create transaction due to missing or invalid fields.",
       errors: error.errors,

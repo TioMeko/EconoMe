@@ -1,14 +1,28 @@
-import { Savings } from "../models/index.js";
+import { Savings, User } from "../models/index.js";
 
 // Create a new savings
 const createSavings = async (req, res) => {
   try {
+    if (!req.body.userId) {
+      return res.status(400).send({ message: "UserId is required to create savings." });
+    }
+
+    const { userId } = req.body;
+
+    const userExists = await User.findById(userId);
+    if (!userExists) {
+      return res.status(404).send({ message: "User not found. Cannot create savings." });
+    }
+
     const newSavings = new Savings(req.body);
     await newSavings.save();
+
+    await User.findByIdAndUpdate(userId, { $push: { savings: newSavings._id } });
+
     console.log(`[${new Date().toISOString()}] New savings has been created.`);
     res.status(201).send(newSavings);
   } catch (error) {
-    // 400 Error if missing params
+    console.error(error);
     res.status(400).send({
       message: "Failed to create savings due to missing or invalid fields.",
       errors: error.errors,

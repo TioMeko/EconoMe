@@ -18,6 +18,7 @@ const accountSchema = new Schema({
     type: Number,
     required: true,
   },
+  transactions: [{ type: Schema.Types.ObjectId, ref: "Transaction" }],
 });
 
 const Account = model("Account", accountSchema);

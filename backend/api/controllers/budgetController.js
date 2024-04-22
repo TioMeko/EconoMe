@@ -1,14 +1,27 @@
-import { Budget } from "../models/index.js";
+import { Budget, User } from "../models/index.js";
 
 // Create a new budget
 const createBudget = async (req, res) => {
   try {
+    if (!req.body.userId) {
+      return res.status(400).send({ message: "UserId is required to create a budget." });
+    }
+
+    const { userId } = req.body;
+
+    const userExists = await User.findById(userId);
+    if (!userExists) {
+      return res.status(404).send({ message: "User not found. Cannot create budget." });
+    }
+
     const newBudget = new Budget(req.body);
     await newBudget.save();
+    await User.findByIdAndUpdate(userId, { $push: { budgets: newBudget._id } });
+
     console.log(`[${new Date().toISOString()}] New budget has been created.`);
     res.status(201).send(newBudget);
   } catch (error) {
-    // 400 Error if missing params
+    console.error(error);
     res.status(400).send({
       message: "Failed to create budget due to missing or invalid fields.",
       errors: error.errors,

@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import connectDatabase from "./config/connection.js";
 import seedDatabase from "./api/models/seed.js";
 import routes from "./api/routes/index.js";
-import { errorHandle, requestLogging } from "./middleware/middleware.js";
+import { errorHandle, requestLogging } from "./utils/middleware/index.js";
+import dateFormat from "./utils/helper/dateFormat.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -18,20 +19,20 @@ const startServer = async () => {
   try {
     await connectDatabase();
     console.log(
-      `[${new Date().toISOString()}] Connected to database, now seeding...`
+      `${dateFormat} Connected to database, now seeding...`
     );
     // await seedDatabase();
     // console.log(
-    //   `[${new Date().toISOString()}] Seeding completed, starting server...`
+    //   `${dateFormat} Seeding completed, starting server...`
     // );
     app.listen(PORT, () => {
       console.log(
-        `[${new Date().toISOString()}] API server running on port ${PORT}`
+        `${dateFormat} API server running on port ${PORT}`
       );
     });
   } catch (error) {
     console.error(
-      `[${new Date().toISOString()}] Failed to connect to the database or seed data:`,
+      `${dateFormat} Failed to connect to the database or seed data:`,
       error
     );
     process.exit(1);

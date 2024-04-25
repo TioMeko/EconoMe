@@ -54,7 +54,7 @@ const createUser = async (req, res) => {
 // Get a user's data by ID
 const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.params.id).select("-password")
     if (!user) return res.status(400).send({ message: "User not found" });
     res.send(user);
   } catch (error) {

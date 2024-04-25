@@ -6,10 +6,13 @@ import seedDatabase from "./api/models/seed.js";
 import routes from "./api/routes/index.js";
 import { errorHandle, requestLogging } from "./utils/middleware/index.js";
 import dateFormat from "./utils/helper/dateFormat.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./docs/swaggerConfig.js";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 requestLogging(app);
 app.use(bodyParser.json());
 app.use('/api', routes);

@@ -57,6 +57,10 @@ const router = Router();
  *         description: User successfully logged in. Returns the user details and token.
  *       '401':
  *         description: Unauthorized. Invalid credentials.
+ *       '404':
+ *         description: User not found
+ *       '500':
+ *         description: Server error
  *     security: []
  */
 
